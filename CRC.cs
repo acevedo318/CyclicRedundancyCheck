@@ -9,7 +9,7 @@ namespace CyclicRedundancyCheck
     /// <summary>
     /// Detectar cambios accidentales en el canal de comunicacion
     /// </summary>
-   class CRC
+  class CRC
     {
     
         public String Datos { get; }
@@ -18,6 +18,7 @@ namespace CyclicRedundancyCheck
         public int longitudPolinomioGenerador { get; }
         private int r = 0;
         public String DatosEmisor { get; set; }
+        private int contador;
 
         public CRC(String Datos,String PolinomioGenerador)
         {
@@ -26,7 +27,7 @@ namespace CyclicRedundancyCheck
             this.longitudDatos = this.Datos.Length;
             this.longitudPolinomioGenerador = PolinomioGenerador.Length;
             this.r = this.longitudPolinomioGenerador - 1;
-            Emisor();
+            this.DatosEmisor = Emisor();
         }
 
         private string Emisor()
@@ -40,7 +41,7 @@ namespace CyclicRedundancyCheck
                 datos = string.Concat(datos, "0");
             }
 
-            emitido = Division(datos);
+            emitido = this.Datos + Division(datos);
 
             Console.WriteLine(Xor('1', '0').ToString());
             
@@ -93,6 +94,13 @@ namespace CyclicRedundancyCheck
                 }
                 
             }
+            
+            while (residuo.Length != this.r)
+            {
+                residuo = string.Concat('0', residuo);
+            }
+
+            
 
             return residuo;
         }
@@ -102,6 +110,7 @@ namespace CyclicRedundancyCheck
             string data = string.Copy(datos);
             string valor = "";
             int j = 0;
+            contador = 0;
             
             for (int i = 0; i < datos.Length; i++)
             {
@@ -109,7 +118,7 @@ namespace CyclicRedundancyCheck
                 {
                     
                     data = data.Substring(j+1);
-                    
+                    contador++;
                 }
                 else
                 {
@@ -121,6 +130,7 @@ namespace CyclicRedundancyCheck
 
             return valor;
         }
+
      
     }
 
