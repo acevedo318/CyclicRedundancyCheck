@@ -45,6 +45,12 @@ namespace CyclicRedundancyCheck
             return emitido;
         }
 
+        /// <summary>
+        /// XOR
+        /// </summary>
+        /// <param name="valor1"></param>
+        /// <param name="valor2"></param>
+        /// <returns></returns>
         private char Xor(char valor1,char valor2)
         {
             if (valor1.Equals(valor2))
