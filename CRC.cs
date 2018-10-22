@@ -9,7 +9,7 @@ namespace CyclicRedundancyCheck
     /// <summary>
     /// Detectar cambios accidentales en el canal de comunicacion
     /// </summary>
-    class CRC
+   class CRC
     {
     
         public String Datos { get; }
@@ -33,11 +33,14 @@ namespace CyclicRedundancyCheck
         {
             string datos = this.Datos;
             string emitido = "";
+            
 
             for (int i = 0; i < this.r; i++)
             {
                 datos = string.Concat(datos, "0");
             }
+
+            emitido = Division(datos);
 
             Console.WriteLine(Xor('1', '0').ToString());
             
@@ -63,6 +66,60 @@ namespace CyclicRedundancyCheck
             }
 
             
+        }
+
+        private string Division(string datos)
+        {
+            string residuo = "";
+
+            for (int i = 0; i < datos.Length; i++)
+            {
+                residuo = string.Concat(residuo, datos[i]);
+
+                if (residuo.Length == PolinomioGenerador.Length)
+                {
+                    string resultados = "";
+                    for (int j = 0; j < residuo.Length; j++)
+                    {
+                        resultados = string.Concat(resultados, Xor(residuo[j], PolinomioGenerador[j]));
+
+                    }
+                    
+                    resultados = Cortar(resultados);
+                    
+                    
+                    residuo = resultados;
+                    
+                }
+                
+            }
+
+            return residuo;
+        }
+
+        private string Cortar(string datos)
+        {
+            string data = string.Copy(datos);
+            string valor = "";
+            int j = 0;
+            
+            for (int i = 0; i < datos.Length; i++)
+            {
+                if (datos[i] == '0')
+                {
+                    
+                    data = data.Substring(j+1);
+                    
+                }
+                else
+                {
+                    
+                    break;
+                }
+            }
+            valor = data;
+
+            return valor;
         }
      
     }
