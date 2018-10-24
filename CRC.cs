@@ -19,7 +19,13 @@ namespace CyclicRedundancyCheck
         private int r = 0;
         public String DatosEmisor { get; set; }
         private int contador;
+        public bool Receptor { get; }
 
+        /// <summary>
+        /// Constructor del CRC
+        /// </summary>
+        /// <param name="Datos">cadena binaria de los datos</param>
+        /// <param name="PolinomioGenerador">el polinomio evaluador</param>
         public CRC(String Datos,String PolinomioGenerador)
         {
             this.Datos = Datos;
@@ -28,8 +34,13 @@ namespace CyclicRedundancyCheck
             this.longitudPolinomioGenerador = PolinomioGenerador.Length;
             this.r = this.longitudPolinomioGenerador - 1;
             this.DatosEmisor = Emisor();
+            this.Receptor = VerificarReceptor();
         }
 
+        /// <summary>
+        /// Se reciben los datos y se le agregan los 0 necesarios hasta completar r (r=longitudPolinG-1) 
+        /// </summary>
+        /// <returns>la cadena emitida</returns>
         private string Emisor()
         {
             string datos = this.Datos;
@@ -42,15 +53,41 @@ namespace CyclicRedundancyCheck
             }
 
             emitido = this.Datos + Division(datos);
-
-            Console.WriteLine(Xor('1', '0').ToString());
             
 
             return emitido;
         }
 
         /// <summary>
-        /// XOR
+        /// Se recibe la cadena emitida y se verifica la integridad de los datos 
+        /// </summary>
+        /// <returns>true si es correcto y false incorrecto</returns>
+        private bool VerificarReceptor()
+        {
+            string datos = this.DatosEmisor;
+            string recibido = "";
+            byte sum = 0;
+            bool verificacion = false;
+
+            recibido =  Division(datos);
+
+            foreach (var item in recibido)
+            {
+                sum += byte.Parse(item.ToString());
+            }
+
+            if (sum == 0)
+            {
+                verificacion = true;
+            }
+
+            Console.WriteLine(recibido);
+
+            return verificacion;
+        }
+
+        /// <summary>
+        /// Evaluador XOR
         /// </summary>
         /// <param name="valor1"></param>
         /// <param name="valor2"></param>

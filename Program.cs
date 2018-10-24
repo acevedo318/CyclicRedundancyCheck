@@ -14,9 +14,15 @@ namespace CyclicRedundancyCheck
 
         static void Main(string[] args)
         {
-            
+            Console.Title = "CRC";
+
             CRC A = new CRC(datos, polinomioGenerador);
-            
+
+            Console.WriteLine("datos: "+A.Datos);
+            Console.WriteLine("Polinomio Generador: "+A.PolinomioGenerador);
+            Console.WriteLine("Datos emitidos: "+A.DatosEmisor);
+            Console.WriteLine("Datos Correctos en Receptor: "+ A.Receptor);
+
 
             Console.Read();
         }
